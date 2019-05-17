@@ -1,0 +1,40 @@
+{
+  "name": "TheBusinessWeb",
+  "version": "1.0.0",
+  "description": "The business web - combile NodeJS and MongoDB",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "start-server": "node app.js"
+  },
+  "author": "Nguyen Phuong Vuong",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "form-data": "^2.3.3",
+    "nodemon": "^1.18.3",
+    "translate": "^1.1.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
+    "connect-mongodb-session": "^2.1.1",
+    "csurf": "^1.10.0",
+    "duplexer": "^0.1.1",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.16.1",
+    "gridfs-stream": "^1.1.1",
+    "middleware": "^1.0.0",
+    "mongodb": "^3.1.6",
+    "mongoose": "^5.2.17",
+    "multer": "^1.4.1",
+    "nodemailer": "^6.1.1",
+    "random-number": "0.0.9",
+    "sequelize": "^4.43.0",
+    "uploadcare": "^0.4.5"
+  }
+}
