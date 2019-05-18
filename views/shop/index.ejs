@@ -156,7 +156,8 @@
                             class="block-btn hov-btn1 js-show-modal1">
                             Quick View
                         </a> -->
-                        <a  href="#popup" class="block-btn hov-btn1">
+                        <a  href="#popup" onclick="showdata('<%= prods[j].title %>', '<%= prods[j].category %>','<%= prods[j].description %>',
+                            '<%= prods[j].imageUrl %>', '<%= prods[j]._id %>')" class="block-btn hov-btn1">
                             Quick View
                         </a>
                     </figure>
@@ -508,23 +509,7 @@ I was looking for a quick and easy food delivery service in San Franciso. I trie
             </span>
     </div>
 
-    <div class="popup" id="popup">
-            <div class="popup__content">
-                <div class="popup__left">
-                    <img src="images/1.jpg" alt="Tour photo" class="popup__img">
-                </div>
-                <div class="popup__right">
-                    <a href="#section-tours" class="popup__close">&times;</a>
-                    <h2 class="heading-secondary u-margin-bottom-small">Start booking now</h2>
-                    <h3 class="heading-tertiary u-margin-bottom-small">Important &ndash; Please read these terms before booking</h3>
-                    <p class="popup__text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Sed sed risus pretium quam. Aliquam sem et tortor consequat id. Volutpat odio facilisis mauris sit
-                    </p>
-                    <a href="#" class="btn btn--green">Book now</a>
-                </div>
-            </div>
-    </div>
+    <%- include("../includes/modals.ejs") %>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
