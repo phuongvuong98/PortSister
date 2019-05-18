@@ -1,27 +1,27 @@
-const path = require("path");
-const express = require("express");
-const bodyParser = require("body-parser");
+const path = require('path');
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
+const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
 
-const mongoose = require("mongoose");
+const errorController = require('./controllers/error');
+const User = require('./models/user');
 
-const errorController = require("./controllers/error");
-
-const User = require("./models/user");
+const MONGODB_URI =
+  'mongodb+srv://phuongvuong98:<Vuong0935986100>@port-sister-fowwy.mongodb.net/test';
 
 const app = express();
-const MONGODB_URI =
-'mongodb+srv://nodejs:Vuong0935986100@cluster0-aecmg.mongodb.net/test';
-
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions'
 });
+const csrfProtection = csrf();
 
-// chinh image dc luu trong server va ten cua no
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'images');
@@ -31,7 +31,6 @@ const fileStorage = multer.diskStorage({
   }
 });
 
-// dieu chinh format upload hop le
 const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === 'image/png' ||
@@ -44,75 +43,77 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Them templating engine de render html, css
-app.set("view engine", "ejs");
-app.set("views", "views");
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-const adminRoutes = require("./routes/admin");
-const shopRoutes = require("./routes/shop");
-const utilRoutes = require("./routes/util");
-const authRoutes = require("./routes/auth");
-const userInforRoutes = require("./routes/userInfor");
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
 
 app.use(bodyParser.urlencoded({ extended: false }));
-// dung multer de loc file 
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
 app.use(express.static(path.join(__dirname, 'public')));
-// them 1 static duong dan public
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
-// cấu hình cho session
 app.use(
   session({
-    secret: 'my secret', // secret dùng tạo hash (hash lưu id trong cookie)
-    resave: false, // session sẽ ko lưu với mỗi lệnh request => tốc đô
-    saveUninitialized: false, // chắn chăn ko có session đc save mỗi request
+    secret: 'my secret',
+    resave: false,
+    saveUninitialized: false,
     store: store
   })
 );
-
-// them flash de gui ve message error thong qua session
+app.use(csrfProtection);
 app.use(flash());
 
-// Tao middleware cho user khi da start thanh cong SERVER voi PORT
 app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
+app.use((req, res, next) => {
+  // throw new Error('Sync Dummy');
   if (!req.session.user) {
     return next();
   }
   User.findById(req.session.user._id)
     .then(user => {
+      if (!user) {
+        return next();
+      }
       req.user = user;
       next();
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      next(new Error(err));
+    });
 });
 
-app.use((req, res, next) => {
-  // gui ve 1 bien trong moi 1 route
-  res.locals.isAuthenticated = req.session.isLoggedIn;
-  res.locals.currentUser = req.session.user;
-  res.locals.errMessage = req.session.errM;
-  res.locals.errPass = req.session.errP;
-  next();
-});
-
-app.use("/admin", adminRoutes);
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
-app.use(utilRoutes);
 app.use(authRoutes);
-app.use(userInforRoutes);
+
+app.get('/500', errorController.get500);
+
 app.use(errorController.get404);
 
-mongoose.
-  connect(
-    MONGODB_URI,
-    { useNewUrlParser: true}
-  )
+app.use((error, req, res, next) => {
+  // res.status(error.httpStatusCode).render(...);
+  // res.redirect('/500');
+  res.status(500).render('500', {
+    pageTitle: 'Error!',
+    path: '/500',
+    isAuthenticated: req.session.isLoggedIn
+  });
+});
+
+mongoose
+  .connect(MONGODB_URI, { useNewUrlParser: true })
   .then(result => {
+    app.listen(3000);
     console.log("CONNECTED");
-    app.listen(process.env.PORT || 3000);
   })
   .catch(err => {
     console.log(err);

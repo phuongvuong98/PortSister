@@ -1,68 +1,18 @@
-const mongoose = require("mongoose");
-
-const Product = require("../models/product");
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  username: {
+  email: {
     type: String,
-    require: true
+    required: true
   },
   password: {
     type: String,
-    require: true
+    required: true
   },
-  email: {
-    type: String,
-    require: true
-  },
-  address: {
-    type: String,
-    require: true
-  },
-  birthday: {
-    type: String,
-    require: true
-  },
-  commentBox: {
-    items: [
-      {
-        productId: {
-          type: Schema.Types.ObjectId,
-          ref: 'Product',
-          required: true
-        },
-        stars:{
-          type: Number
-        },
-        commentlist: [{
-          type: String
-        } ]      
-      }
-    ] ////7777777777777777777777777777777777777777777777777777777777777777
-  },
-  imageUrl: {
-    type: String,
-    default: "https://ucarecdn.com/5d276379-552f-4a08-97e7-744a15f71477/ava.png"
-  },
-  phone: {
-    type: String
-  },
-  create_at: {
-    type: Date,
-    default: Date.now
-  },
-  update_at: {
-    type: Date
-  },
-  delete_at: {
-    type: Date
-  },
-  role: {
-    type: String,
-    default: "user"
-  },
+  resetToken: String,
+  resetTokenExpiration: Date,
   cart: {
     items: [
       {
@@ -71,26 +21,21 @@ const userSchema = new Schema({
           ref: 'Product',
           required: true
         },
-        quantity: { type: Number}
+        quantity: { type: Number, required: true }
       }
-    ],
-    sum: {
-      type: Number,
-      default: 0
-    }
-  },
-  productOrder: []
+    ]
+  }
 });
 
-userSchema.methods.addToCart = function(product, newQuantity) {
+userSchema.methods.addToCart = function(product) {
   const cartProductIndex = this.cart.items.findIndex(cp => {
     return cp.productId.toString() === product._id.toString();
   });
-  
+  let newQuantity = 1;
   const updatedCartItems = [...this.cart.items];
 
   if (cartProductIndex >= 0) {
-    newQuantity = this.cart.items[cartProductIndex].quantity + newQuantity;
+    newQuantity = this.cart.items[cartProductIndex].quantity + 1;
     updatedCartItems[cartProductIndex].quantity = newQuantity;
   } else {
     updatedCartItems.push({
@@ -98,51 +43,153 @@ userSchema.methods.addToCart = function(product, newQuantity) {
       quantity: newQuantity
     });
   }
-  this.cart.sum = this.cart.sum + product.price * newQuantity;
-  console.log("TCL: userSchema.methods.addToCart -> updatedCartItems", updatedCartItems)
   const updatedCart = {
-    items: updatedCartItems,
-    sum: this.cart.sum
+    items: updatedCartItems
   };
   this.cart = updatedCart;
   return this.save();
 };
 
-
-userSchema.methods.addToComment = function (product, comment, ratting) {
-  
-  const userCommentList = this.commentBox.items.findIndex(cp => {
-  return cp.productId.toString() === product._id.toString();
+userSchema.methods.removeFromCart = function(productId) {
+  const updatedCartItems = this.cart.items.filter(item => {
+    return item.productId.toString() !== productId.toString();
   });
-  console.log(comment, ratting);
-  const updateComment = [...this.commentBox.items];
-  //console.log("​updateComment", updateComment);
-
-    if (userCommentList >= 0) {
-      console.log("kkkk", comment);
-      this.commentBox.items[userCommentList].commentlist.push(comment);
-			console.log("​userSchema.methods.addToComment -> this.commentBox.items[userCommentList].commentlist", this.commentBox.items[userCommentList].commentlist);
-      var temp = this.commentBox.items[userCommentList].commentlist;
-			console.log("​userSchema.methods.addToComment -> temp", temp);
-			console.log("​userSchema.methods.addToComment -> comment", comment);
-		  //console.log("​userSchema.methods.addToComment -> this.commentBox.items[userCommentList].commentlist", this.commentBox.items[userCommentList].commentlist);
-      updateComment[userCommentList].commentlist = temp;
-			//console.log("​userSchema.methods.addToComment -> updateComment", updateComment);
-			//console.log("​userSchema.methods.addToComment -> comment", comment);
-    } else {
-      updateComment.push({
-        productId: product._id,
-        stars: ratting,
-        commentlist: [comment]
-      });
-    }
-
-
-  //console.log("​updateComment", updateComment);
-  this.commentBox.items = updateComment;
-
-
+  this.cart.items = updatedCartItems;
   return this.save();
 };
-module.exports = mongoose.model("User", userSchema);
 
+userSchema.methods.clearCart = function() {
+  this.cart = { items: [] };
+  return this.save();
+};
+
+module.exports = mongoose.model('User', userSchema);
+
+// const mongodb = require('mongodb');
+// const getDb = require('../util/database').getDb;
+
+// const ObjectId = mongodb.ObjectId;
+
+// class User {
+//   constructor(username, email, cart, id) {
+//     this.name = username;
+//     this.email = email;
+//     this.cart = cart; // {items: []}
+//     this._id = id;
+//   }
+
+//   save() {
+//     const db = getDb();
+//     return db.collection('users').insertOne(this);
+//   }
+
+//   addToCart(product) {
+//     const cartProductIndex = this.cart.items.findIndex(cp => {
+//       return cp.productId.toString() === product._id.toString();
+//     });
+//     let newQuantity = 1;
+//     const updatedCartItems = [...this.cart.items];
+
+//     if (cartProductIndex >= 0) {
+//       newQuantity = this.cart.items[cartProductIndex].quantity + 1;
+//       updatedCartItems[cartProductIndex].quantity = newQuantity;
+//     } else {
+//       updatedCartItems.push({
+//         productId: new ObjectId(product._id),
+//         quantity: newQuantity
+//       });
+//     }
+//     const updatedCart = {
+//       items: updatedCartItems
+//     };
+//     const db = getDb();
+//     return db
+//       .collection('users')
+//       .updateOne(
+//         { _id: new ObjectId(this._id) },
+//         { $set: { cart: updatedCart } }
+//       );
+//   }
+
+//   getCart() {
+//     const db = getDb();
+//     const productIds = this.cart.items.map(i => {
+//       return i.productId;
+//     });
+//     return db
+//       .collection('products')
+//       .find({ _id: { $in: productIds } })
+//       .toArray()
+//       .then(products => {
+//         return products.map(p => {
+//           return {
+//             ...p,
+//             quantity: this.cart.items.find(i => {
+//               return i.productId.toString() === p._id.toString();
+//             }).quantity
+//           };
+//         });
+//       });
+//   }
+
+//   deleteItemFromCart(productId) {
+//     const updatedCartItems = this.cart.items.filter(item => {
+//       return item.productId.toString() !== productId.toString();
+//     });
+//     const db = getDb();
+//     return db
+//       .collection('users')
+//       .updateOne(
+//         { _id: new ObjectId(this._id) },
+//         { $set: { cart: { items: updatedCartItems } } }
+//       );
+//   }
+
+//   addOrder() {
+//     const db = getDb();
+//     return this.getCart()
+//       .then(products => {
+//         const order = {
+//           items: products,
+//           user: {
+//             _id: new ObjectId(this._id),
+//             name: this.name
+//           }
+//         };
+//         return db.collection('orders').insertOne(order);
+//       })
+//       .then(result => {
+//         this.cart = { items: [] };
+//         return db
+//           .collection('users')
+//           .updateOne(
+//             { _id: new ObjectId(this._id) },
+//             { $set: { cart: { items: [] } } }
+//           );
+//       });
+//   }
+
+//   getOrders() {
+//     const db = getDb();
+//     return db
+//       .collection('orders')
+//       .find({ 'user._id': new ObjectId(this._id) })
+//       .toArray();
+//   }
+
+//   static findById(userId) {
+//     const db = getDb();
+//     return db
+//       .collection('users')
+//       .findOne({ _id: new ObjectId(userId) })
+//       .then(user => {
+//         console.log(user);
+//         return user;
+//       })
+//       .catch(err => {
+//         console.log(err);
+//       });
+//   }
+// }
+
+// module.exports = User;

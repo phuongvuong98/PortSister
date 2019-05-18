@@ -1,46 +1,54 @@
 const path = require('path');
 
 const express = require('express');
+const { body } = require('express-validator/check');
 
 const adminController = require('../controllers/admin');
-
 const isAuth = require('../middleware/is-auth');
 
 const router = express.Router();
 
-router.get("/", isAuth ,adminController.getIndex);
+// /admin/add-product => GET
+router.get('/add-product', isAuth, adminController.getAddProduct);
 
-router.get("/users", isAuth, adminController.getUser);
+// /admin/products => GET
+router.get('/products', isAuth, adminController.getProducts);
 
-router.get("/edit-user/:userId", isAuth,  adminController.getEditUser);
+// /admin/add-product => POST
+router.post(
+  '/add-product',
+  [
+    body('title')
+      .isString()
+      .isLength({ min: 3 })
+      .trim(),
+    body('category').isString(),
+    body('description')
+      .isLength({ min: 5, max: 400 })
+      .trim()
+  ],
+  isAuth,
+  adminController.postAddProduct
+);
 
-router.post("/edit-user", isAuth,  adminController.postEditUser);
+router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
 
-router.post("/deleteUser", isAuth,  adminController.postDeleteUser);
+router.post(
+  '/edit-product',
+  [
+    body('title')
+      .isString()
+      .isLength({ min: 3 })
+      .trim(),
+    body('price').isFloat(),
+    body('description')
+      .isLength({ min: 5, max: 400 })
+      .trim()
+  ],
+  isAuth,
+  adminController.postEditProduct
+);
 
-router.get("/products", isAuth,  adminController.getProducts);
-
-router.get("/add-product", isAuth,  adminController.getAddProduct);
-
-router.post("/add-product", isAuth,  adminController.postAddProduct);
-
-router.get("/edit-product/:productId", isAuth,  adminController.getEditProduct);
-
-router.post("/edit-product", isAuth,  adminController.postEditProduct);
-
-router.post("/delete-product", isAuth,  adminController.postDeleteProduct);
-
-router.get("/orders", isAuth,  adminController.getOrders);
-
-// router.get('/products', adminController.getProducts);
-
-// // /admin/add-product => POST
-// router.post('/add-product', adminController.postAddProduct);
-
-// router.get('/edit-product/:productId', adminController.getEditProduct);
-
-// router.post('/edit-product', adminController.postEditProduct);
-
-// router.post('/delete-product', adminController.postDeleteProduct);
+router.post('/delete-product', isAuth, adminController.postDeleteProduct);
 
 module.exports = router;

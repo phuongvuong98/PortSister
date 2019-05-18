@@ -1,314 +1,217 @@
-const Product = require("../models/product");
-const User = require("../models/user");
+const mongoose = require('mongoose');
 
-exports.getIndex = (req, res, next) => {
-  res.render("admin/index", {
-      pageTitle: "Admin Page",
-      path: "/"
-  });
-};
+const fileHelper = require('../util/file');
 
-exports.getUser = (req, res, next) => {
-  User.find()
-  .then(users => {
-    //console.log(users);
-    res.render("admin/user-list", {
-      pageTitle: "ALL USERS",
-      users: users
-  });
-  })
-};
+const { validationResult } = require('express-validator/check');
 
-exports.getEditUser = (req, res, next) => {
-  const userId = req.params.userId;
-  console.log("TCL: exports.getEditUser -> userId", userId);
-  
-  User.findById(userId)
-  .then(user => {
-    if (!user) {
-      return res.redirect("/admin");
-    }
-    res.render("admin/user-edit", {
-      pageTitle: "Edit user",
-      user: user
-    });
-  })
-  .catch(err => {
-		console.log("TCL: exports.getEditUser -> err", err)
-  });
-};
-
-exports.postEditUser = (req, res, next) => {
-  const userId = req.body.userId;
-  const emailUp = req.body.email;
-  const birthdayUp = req.body.birthday;
-  const phoneUp = req.body.phone;
-  const roleUp = req.body.role;
-  const addressUp = req.body.address;
-  const delete_atUp = req.body.delete_at;
-  const image = req.file;
-  
-	console.log("TCL: exports.postEditUser -> image", image);
-  console.log("TCL: exports.postEditUser -> userId", userId);
-  
-  User.findById(userId)
-  .then(user => {
-    user.email = emailUp;
-    user.birthday = birthdayUp;
-    user.phone = phoneUp;
-    user.role = roleUp;
-    user.address = addressUp;
-    user.delete_at = delete_atUp;
-    user.update_at = Date();
-    
-    if (image) {
-      user.imageUrl = "/" + image.path;
-    } else {
-      user.imageUrl = "https://ucarecdn.com/5d276379-552f-4a08-97e7-744a15f71477/ava.png";
-    }
-
-    return user.save();
-  })
-  .then(result => {
-    console.log("Updated user!");
-    return res.redirect("/admin/users");
-  })
-  .catch(err => {
-		console.log("TCL: exports.getEditUser -> err", err)
-  });
-};
-
-exports.postDeleteUser = (req, res, next) => {
-  const userId = req.body.userId;
-  const delete_atUp = new Date();
-	console.log("TCL: exports.postDeleteUser -> delete_atUp", delete_atUp)
-  
-  User.findById(userId)
-  .then(user => {
-    user.delete_at = delete_atUp;
-    return user.save();
-  })
-  .then(result => {
-    console.log("Deleted user!");
-    return res.redirect("/admin/users");
-  })
-  .catch(err => {
-		console.log("TCL: exports.postDeleteUser -> err", err)
-  });
-};
-
-
-exports.getProducts = (req, res, next) => {
-  Product.find()
-  .then(products => {
-    res.render("admin/product-list", {
-      pageTitle: "ALL PRODUCTS",
-      products: products
-  });
-  })
-};
+const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
-  const list_cate = [];
-  Product.find().exec(function(err, data){
-    
-    for (var product of data){
-      var check = true;
-      for( var x of list_cate){
-        if(x == product.category){
-          check = false;
-          break;
-        }
-      }
-      if(check == true){
-        list_cate.push(product.category);
-        //console.log(list_cate.length);
-      }
-    
-    }
-    res.render("admin/product-edit", {
-      pageTitle: "ADD PRODUCT",
-      editing: false,
-      list_cate: list_cate
-    });
-    //console.log(list_cate.length);
+  res.render('admin/edit-product', {
+    pageTitle: 'Add Product',
+    path: '/admin/add-product',
+    editing: false,
+    hasError: false,
+    errorMessage: null,
+    validationErrors: []
   });
-  
 };
 
 exports.postAddProduct = (req, res, next) => {
-  const name = req.body.name;
+  const title = req.body.title;
+  const image = req.file;
   const category = req.body.category;
   const description = req.body.description;
-  const price = req.body.price;
-  const size = req.body.size;
-  const sizeArr = size.split(",");
-  const create_at = new Date();
+  if (!image) {
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/admin/add-product',
+      editing: false,
+      hasError: true,
+      product: {
+        title: title,
+        category: category,
+        description: description
+      },
+      errorMessage: 'Attached file is not an image.',
+      validationErrors: []
+    });
+  }
   
-  const image = req.file;
-
-  if (image) {
-    imageUrl = "/" + image.path;
-  } else {
-    imageUrl = "https://ucarecdn.com/5d276379-552f-4a08-97e7-744a15f71477/ava.png";
+  const errors = validationResult(req);
+	console.log("TCL: exports.postAddProduct -> req", req)
+	console.log("TCL: exports.postAddProduct -> errors", errors)
+	
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/admin/add-product',
+      editing: false,
+      hasError: true,
+      product: {
+        title: title,
+        category: category,
+        description: description
+      },
+      errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array()
+    });
   }
 
+  const imageUrl = image.path;
+
   const product = new Product({
-    name: name,
+    // _id: new mongoose.Types.ObjectId('5badf72403fd8b5be0366e81'),
+    title: title,
     category: category,
     description: description,
-    price: price,
-    size: sizeArr,
     imageUrl: imageUrl,
-    create_at: create_at,
     userId: req.user
   });
-  product.save();
-  
-  return res.redirect("/admin/products");
+  product
+    .save()
+    .then(result => {
+      // console.log(result);
+      console.log('Created Product');
+      res.redirect('/admin/products');
+    })
+    .catch(err => {
+      // return res.status(500).render('admin/edit-product', {
+      //   pageTitle: 'Add Product',
+      //   path: '/admin/add-product',
+      //   editing: false,
+      //   hasError: true,
+      //   product: {
+      //     title: title,
+      //     imageUrl: imageUrl,
+      //     category: category,
+      //     description: description
+      //   },
+      //   errorMessage: 'Database operation failed, please try again.',
+      //   validationErrors: []
+      // });
+      // res.redirect('/500');
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
-    return res.redirect('/admin/products');
+    return res.redirect('/');
   }
-  const productId = req.params.productId;
-  console.log("TCL: exports.getEditProduct -> productId", productId);
-  Product.findById(productId)
+  const prodId = req.params.productId;
+  Product.findById(prodId)
     .then(product => {
       if (!product) {
-        return res.redirect('/admin/products');
+        return res.redirect('/');
       }
-      Product.find().exec(function(err, data){
-        const list_cate = [];
-        for (var pro of data){
-          var check = true;
-          for( var x of list_cate){
-            if((x == pro.category)){
-              check = false;
-              break;
-            }
-          }
-          if(check == true){
-            list_cate.push(pro.category);
-            //console.log(list_cate.length);
-          }
-          
-        }
-        list_cate.splice(list_cate.indexOf(product.category), 1);
-        //console.log(list_cate.length);
-        res.render("admin/product-edit", {
-        pageTitle: "EDIT PRODUCT",
+      res.render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: '/admin/edit-product',
         editing: editMode,
         product: product,
-        list_cate: list_cate
-        });
-        
-        //console.log(list_cate.length);
+        hasError: false,
+        errorMessage: null,
+        validationErrors: []
       });
-      
     })
     .catch(err => {
-			console.log("TCL: exports.getEditProduct -> err", err)  
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
 };
 
 exports.postEditProduct = (req, res, next) => {
-  const productId = req.body.productId;
-	console.log("TCL: exports.postEditProduct -> productId", productId);
-
-  const name = req.body.name;
-  const category = req.body.category;
-  const description = req.body.description;
-  const price = req.body.price;
-  const size = req.body.size;
-  const sizeArr = size.split(",");
-  const create_at = new Date();
-  
+  const prodId = req.body.productId;
+  const updatedTitle = req.body.title;
+  const updatedcategory = req.body.category;
   const image = req.file;
+  const updatedDesc = req.body.description;
 
-  if (image) {
-    imageUrl = "/" + image.path;
-  } else {
-    imageUrl = "https://ucarecdn.com/5d276379-552f-4a08-97e7-744a15f71477/ava.png";
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: '/admin/edit-product',
+      editing: true,
+      hasError: true,
+      product: {
+        title: updatedTitle,
+        category: updatedcategory,
+        description: updatedDesc,
+        _id: prodId
+      },
+      errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array()
+    });
   }
 
-  Product.findById(productId)
+  Product.findById(prodId)
     .then(product => {
-      if (!product) {
-        return res.redirect('/admin/products');
+      if (product.userId.toString() !== req.user._id.toString()) {
+        return res.redirect('/');
       }
-      
-      product.name = name;
-      product.category = category;
-      product.description = description;
-      product.price = price;
-      product.size = sizeArr;
-      product.imageUrl = imageUrl;
-      product.create_at = create_at;
-      product.userId = req.user;
-
-      product.save();
-      
-      return res.redirect("/admin/products");
+      product.title = updatedTitle;
+      product.category = updatedcategory;
+      product.description = updatedDesc;
+      if (image) {
+        fileHelper.deleteFile(product.imageUrl);
+        product.imageUrl = image.path;
+      }
+      return product.save().then(result => {
+        console.log('UPDATED PRODUCT!');
+        res.redirect('/admin/products');
+      });
     })
     .catch(err => {
-			console.log("TCL: exports.getEditProduct -> err", err)  
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getProducts = (req, res, next) => {
+  Product.find({ userId: req.user._id })
+    // .select('title category -_id')
+    // .populate('userId', 'name')
+    .then(products => {
+      console.log(products);
+      res.render('admin/products', {
+        prods: products,
+        pageTitle: 'Admin Products',
+        path: '/admin/products'
+      });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
 };
 
 exports.postDeleteProduct = (req, res, next) => {
-  const productId = req.body.productId;
-	console.log("TCL: exports.postDeleteProduct -> productId", productId)
-  const delete_atUp = new Date();
-	console.log("TCL: exports.postDeleteProduct -> delete_atUp", delete_atUp)
-	
-  
-  Product.findById(productId)
-  .then(product => {
-    product.delete_at = delete_atUp;
-    return product.save();
-  })
-  .then(result => {
-    console.log("Deleted product!");
-    return res.redirect("/admin/products");
-  })
-  .catch(err => {
-		console.log("TCL: exports.postDeleteProduct -> err", err)
-  });
-};
-
-
-exports.getOrders = (req, res, next) => {
-  User.find()
-      .populate("cart.items.productId")
-    .then(users => {
-      const orderList = [];
-      for (let i = 0; i < users.length; i++) {
-        let user = users[i];
-        let productOrder = user.productOrder || []
-        for (let i = 0; i < productOrder.length; i++){
-          let items = productOrder[i].items;
-
-          orderList.push({
-            user: user.email,
-            sumPrice: productOrder[i].sum,
-            itemsOrder: items
-          })
-        }
+  const prodId = req.body.productId;
+  Product.findById(prodId)
+    .then(product => {
+      if (!product) {
+        return next(new Error('Product not found.'));
       }
-      console.log("Order List: ");
-      console.log(orderList)
-      res.render("admin/order-list", {
-        pageTitle: "All Orders",
-        path: "/",
-        orders: orderList
-      });
+      fileHelper.deleteFile(product.imageUrl);
+      return Product.deleteOne({ _id: prodId, userId: req.user._id });
+    })
+    .then(() => {
+      console.log('DESTROYED PRODUCT');
+      res.redirect('/admin/products');
     })
     .catch(err => {
-      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
-
 };
-
