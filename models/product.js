@@ -15,10 +15,11 @@ const productSchema = new Schema({
     type: String,
     required: true
   },
-  imageUrl: {
+  imageUrlCover: {
     type: String,
     required: true
   },
+  imageUrlOther:[],
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',

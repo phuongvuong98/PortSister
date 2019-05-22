@@ -11,12 +11,10 @@ router.get('/', shopController.getIndex);
 
 router.get('/products/:productId', shopController.getProduct);
 
-router.get('/tagged/advertising', shopController.getAdvertising);
+router.get('/tagged/branding', shopController.getbranding);
 
-router.get('/tagged/bookCover', shopController.getBookCover);
+router.get('/tagged/illustration', shopController.getillustration);
 
-router.get('/tagged/editorial', shopController.getEditorial);
-
-router.get('/tagged/comicStory', shopController.getComicStory);
+router.get('/tagged/packaging', shopController.getpackaging);
 
 module.exports = router;

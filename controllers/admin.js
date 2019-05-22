@@ -18,10 +18,14 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
+  console.log("huhu");
   const title = req.body.title;
-  const image = req.file;
+  const image = req.files;
   const category = req.body.category;
   const description = req.body.description;
+
+  console.log("image:", image);
+
   if (!image) {
     return res.status(422).render('admin/edit-product', {
       pageTitle: 'Add Product',
@@ -39,8 +43,8 @@ exports.postAddProduct = (req, res, next) => {
   }
   
   const errors = validationResult(req);
-	console.log("TCL: exports.postAddProduct -> req", req)
-	console.log("TCL: exports.postAddProduct -> errors", errors)
+	// console.log("TCL: exports.postAddProduct -> req", req)
+	// console.log("TCL: exports.postAddProduct -> errors", errors)
 	
   if (!errors.isEmpty()) {
     console.log(errors.array());
@@ -59,14 +63,23 @@ exports.postAddProduct = (req, res, next) => {
     });
   }
 
-  const imageUrl = image.path;
-
+  const imageUrlCover = image[0].path;
+  const imageUrl = [];
+  
+  image.forEach((img, i) => {
+      if (i != 0) {
+        imageUrl.push(image[i].path);
+      } 
+  });
+  console.log("TCL: exports.postAddProduct -> imageUrl", imageUrl)
+  
   const product = new Product({
     // _id: new mongoose.Types.ObjectId('5badf72403fd8b5be0366e81'),
     title: title,
     category: category,
     description: description,
-    imageUrl: imageUrl,
+    imageUrlCover: imageUrlCover,
+    imageUrlOther: imageUrl,
     userId: req.user
   });
   product

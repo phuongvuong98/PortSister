@@ -24,7 +24,6 @@ body {
     font-size: 18px;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
-
     height: 100%;
 }
 
@@ -40,8 +39,6 @@ body {
 /* ----------------------------------------------- */
 /* REUSABLE COMPONENTS */
 /* ----------------------------------------------- */
-
-
 .row {
     max-width: 1140px;
     margin: 0 20%;
@@ -320,6 +317,70 @@ header {
 .sticky .logo { display: none; }
 .sticky .logo-black { display: block; }
 
+.social-links {
+    list-style: none;
+}
+
+.social-links li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.footer-nav li:last-child,
+.social-links li:last-child {
+    margin-right: 0;
+}
+
+.footer-nav li a:link,
+.footer-nav li a:visited, 
+.social-links li a:link,
+.social-links li a:visited {
+    text-decoration: none;
+    border: 0;
+    color: #fff;
+    -webkit-transition: color 0.2s;
+    transition: color 0.2s;
+    display: inline-block;
+    -webkit-box-shadow: 0px 0px 2px #888;
+            box-shadow: 0px 0px 2px #888;
+    padding: .8rem;
+    border-radius: 45%;
+    background-color: #bd9b62;
+}
+
+.footer-nav li a:hover,
+.footer-nav li a:active {
+    background-color: #555;
+}
+
+.social-links li a:link,
+.social-links li a:visited {
+    font-size: 100%;
+}
+
+.ion-social-facebook,
+.ion-social-twitter,
+.ion-social-googleplus,
+.ion-social-instagram {
+    -webkit-transition: color 0.2s;
+    transition: color 0.2s;
+}
+
+.ion-social-facebook:hover, 
+.ion-social-twitter:hover,
+.ion-social-googleplus:hover,
+.ion-social-instagram:hover
+{
+    color: #fff;
+}
+
+ul.auth {
+    list-style: none;
+}
+
+ul.auth li {
+    display: inline-block;
+}
 /* ----------------------------------------------- */
 /* FEATURES */
 /* ----------------------------------------------- */
@@ -689,76 +750,6 @@ input[type=checkbox] {
 
 *:focus {outline: none;}
 
-
-/* ----------------------------------------------- */
-/* HEADER*/
-/* ----------------------------------------------- */
-
-.social-links {
-    list-style: none;
-}
-
-.social-links li {
-    display: inline-block;
-    margin-right: 10px;
-}
-
-.footer-nav li:last-child,
-.social-links li:last-child {
-    margin-right: 0;
-}
-
-.footer-nav li a:link,
-.footer-nav li a:visited, 
-.social-links li a:link,
-.social-links li a:visited {
-    text-decoration: none;
-    border: 0;
-    color: #fff;
-    -webkit-transition: color 0.2s;
-    transition: color 0.2s;
-    display: inline-block;
-    -webkit-box-shadow: 0px 0px 2px #888;
-            box-shadow: 0px 0px 2px #888;
-    padding: .8rem;
-    border-radius: 45%;
-    background-color: #bd9b62;
-}
-
-.footer-nav li a:hover,
-.footer-nav li a:active {
-    background-color: #555;
-}
-
-.social-links li a:link,
-.social-links li a:visited {
-    font-size: 100%;
-}
-
-.ion-social-facebook,
-.ion-social-twitter,
-.ion-social-googleplus,
-.ion-social-instagram {
-    -webkit-transition: color 0.2s;
-    transition: color 0.2s;
-}
-
-.ion-social-facebook:hover, 
-.ion-social-twitter:hover,
-.ion-social-googleplus:hover,
-.ion-social-instagram:hover
-{
-    color: #fff;
-}
-
-ul.auth {
-    list-style: none;
-}
-
-ul.auth li {
-    display: inline-block;
-}
-
 /* ----------------------------------------------- */
 /* Animations */
 /* ----------------------------------------------- */
@@ -802,7 +793,7 @@ ul.auth li {
 /* POPUP */
 /* ----------------------------------------------- */
 .popup {
-    height: 170%;
+    height: 1000%;
     width: 100%;
     top: 0;
     left: 0;
@@ -824,7 +815,7 @@ ul.auth li {
   }
   .popup__content {
     position: absolute;
-    top: 50%;
+    top: 32%;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);

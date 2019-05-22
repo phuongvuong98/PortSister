@@ -1,18 +1,47 @@
 <script>
-	function showdata(a, b, c, d, productId) {
+	function showdata(a, b, c, d, e,productId) {
 		var link = d.toString();
-		console.log(a +"|"+ b +"|"+ c +"|"+ d +"|"+ productId);
+		console.log(a +"|"+ b +"|"+ c +"|"+ d +"|" + e + "|" + productId);
+		var arrIMG = e.split(",");
+		console.log("TCL: showdata -> arrIMG", arrIMG)
 		document.getElementById("indata1").innerHTML = a;
 		document.getElementById("indata2").innerHTML = b;
 		document.getElementById("indata3").innerHTML = c;
-		document.getElementById("indata4").src = link;
+		document.getElementById("indata4").src = "/" + link;
+		
+        console.log("TCL: showdata -> link", link)
+		for (let i = 0; i < 11; i++) {
+			var temp = "img" + i.toString();
+			console.log(temp);
+			if (arrIMG.length <= i) {
+				document.getElementById(temp).style.display = "none";
+			} else {
+				document.getElementById(temp).src = "/" + arrIMG[i].toString();
+			}
+                
+		}
 		$("a.details").attr("href", "/products/" + productId);
 	}
 </script>
 <div class="popup" id="popup">
 	<div class="popup__content clearfix">
-		<img src="/images/1.jpg" id="indata4" alt="Tour photo" class="popup__img">
+		
+		<img src="" id="indata4" alt="Tour photo" class="popup__img">
 		<a href="<%= path %>" class="popup__close a-in-img">&times;</a>
+
+		<img src="/images/1.jpg" id="img0" alt="Tour photo" class="popup__img">
+		<img src="/images/1.jpg" id="img1" alt="Tour photo" class="popup__img">
+		<img src="/images/1.jpg" id="img2" alt="Tour photo" class="popup__img">
+		<img src="/images/1.jpg" id="img3" alt="Tour photo" class="popup__img">
+		<img src="/images/1.jpg" id="img4" alt="Tour photo" class="popup__img">
+		<img src="/images/1.jpg" id="img5" alt="Tour photo" class="popup__img">
+		<img src="/images/1.jpg" id="img6" alt="Tour photo" class="popup__img">
+		<img src="/images/1.jpg" id="img7" alt="Tour photo" class="popup__img">
+		<img src="/images/1.jpg" id="img8" alt="Tour photo" class="popup__img">
+		<img src="/images/1.jpg" id="img9" alt="Tour photo" class="popup__img">
+		<img src="/images/1.jpg" id="img10" alt="Tour photo" class="popup__img">
+
+
 		<div class="row">
 			<h2 class="heading-secondary u-margin-bottom-small" id="indata1"></h2>
 			<h3 class="heading-tertiary u-margin-bottom-small" id="indata2">Important &ndash; Please read these terms before booking</h3>

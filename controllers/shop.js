@@ -36,7 +36,7 @@ exports.getProduct = (req, res, next) => {
           productPre = products[iPro - 1];
         }
       }
-      
+      console.log("product:",product);
       res.render('shop/product-detail', {
         product: product,
         pageTitle: product.title,
@@ -69,13 +69,13 @@ exports.getIndex = (req, res, next) => {
     });
 };
 
-exports.getAdvertising = (req, res, next) => {
-  Product.find({category: "advertising"})
+exports.getbranding = (req, res, next) => {
+  Product.find({category: "branding"})
     .then(products => {
       res.render('shop/index', {
         prods: products,
         pageTitle: 'Nguyen Anh Nghiet',
-        path: '/tagged/advertising'
+        path: '/tagged/branding'
       });
     })
     .catch(err => {
@@ -85,13 +85,13 @@ exports.getAdvertising = (req, res, next) => {
     });
 };
 
-exports.getBookCover = (req, res, next) => {
-  Product.find({category: "bookCover"})
+exports.getillustration = (req, res, next) => {
+  Product.find({category: "illustration"})
     .then(products => {
       res.render('shop/index', {
         prods: products,
         pageTitle: 'Nguyen Anh Nghiet',
-        path: '/tagged/bookCover'
+        path: '/tagged/illustration'
       });
     })
     .catch(err => {
@@ -100,28 +100,13 @@ exports.getBookCover = (req, res, next) => {
       return next(error);
     });
 };
-exports.getEditorial = (req, res, next) => {
-  Product.find({category: "editorial"})
+exports.getpackaging = (req, res, next) => {
+  Product.find({category: "packaging"})
     .then(products => {
       res.render('shop/index', {
         prods: products,
         pageTitle: 'Nguyen Anh Nghiet',
-        path: '/tagged/editorial'
-      });
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-exports.getComicStory = (req, res, next) => {
-  Product.find({category: "comicStory"})
-    .then(products => {
-      res.render('shop/index', {
-        prods: products,
-        pageTitle: 'Nguyen Anh Nghiet',
-        path: '/tagged/comicStory'
+        path: '/tagged/packaging'
       });
     })
     .catch(err => {

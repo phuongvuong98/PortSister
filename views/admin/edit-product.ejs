@@ -25,16 +25,15 @@
                 <input 
                     type="file" 
                     name="image" 
-                    id="image" >
+                    id="image" multiple>
             </div>
             <div class="form-control">
                 <label for="category">Category</label>
 
                 <select name="category" id="category" class="<%= validationErrors.find(e => e.param === 'category') ? 'invalid' : '' %>">
-                        <option value="advertising" selected="">Advertising</option>
-                        <option value="bookCover">Book Cover</option>
-                        <option value="editorial">Editorial</option>
-                        <option value="comicStory">Comic/Story</option>
+                        <option value="branding" selected="">Branding</option>
+                        <option value="illustration">Illustration</option>
+                        <option value="packaging">Packaging</option>
                 </select>
             </div>
             <div class="form-control">

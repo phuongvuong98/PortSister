@@ -12,10 +12,10 @@
                 <li>
                     <figure class="block-pic hov-img0">
                         <a href="/products/<%= prods[j]._id %>" class="a-in-img">
-                            <img src="<%= prods[j].imageUrl %>" alt="<%= prods[j].title %>" border = "0">
+                            <img src="/<%= prods[j].imageUrlCover %>" alt="<%= prods[j].title %>" border = "0">
                         </a>
                         <a  href="#popup" onclick="showdata('<%= prods[j].title %>', '<%= prods[j].category %>','<%= prods[j].description %>',
-                            '<%= prods[j].imageUrl %>', '<%= prods[j]._id %>')" class="block-btn hov-btn1">
+                            '<%= prods[j].imageUrlCover %>','<%= prods[j].imageUrlOther %>', '<%= prods[j]._id %>')" class="block-btn hov-btn1">
                             Quick View
                         </a>
                     </figure>
