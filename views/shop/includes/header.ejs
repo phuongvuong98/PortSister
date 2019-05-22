@@ -1,0 +1,60 @@
+<header>
+        <nav>
+            <div class="row-nav clearfix">
+                <div class="wrap-logo">
+                    <a href="/" class="a-in-img">
+                        <img src="/resources/img/logo.png" alt="logo" class="logo">
+                    </a>
+                </div>
+            </div>
+            <div class="row-nav clearfix">
+                <p>Illustrator & Visual Storyteller</p>
+            </div>
+            <div class="row-nav clearfix">
+                    <ul class="main-nav js--main-nav">
+                        <span>Work</span>
+                        <li><a class="<%= path === '/tagged/advertising' ? 'active' : '' %>" href="/tagged/advertising">Advertising</a></li>
+                        <li><a class="<%= path === '/tagged/bookCover' ? 'active' : '' %>" href="/tagged/bookCover">Book Cover</a></li>
+                        <li><a class="<%= path === '/tagged/editorial' ? 'active' : '' %>" href="/tagged/editorial">Editorial</a></li>
+                        <li><a class="<%= path === '/tagged/comicStory' ? 'active' : '' %>" href="/tagged/comicStory">Comic/Story</a></li>
+                    </ul>
+                    <ul class="main-nav js--main-nav">
+                        <span>Info</span>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                    <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+            </div>
+            <div class="row-nav clearfix">
+                <ul class="social-links">
+                    <li><a href="#"><i class="ion-social-facebook"></i></a></li>
+                    <li><a href="#"><i class="ion-social-twitter"></i></a></li>
+                    <li><a href="#"><i class="ion-social-googleplus"></i></a></li>
+                    <li><a href="#"><i class="ion-social-instagram"></i></a></li>
+                </ul>
+            </div>
+
+            <div class="row-nav clearfix">
+                <ul class="auth">
+            <% if (!isAuthenticated) { %>
+                <li>
+                    <a class="btn btn-full" href="/login">Login</a>
+                </li>
+                <li>
+                    <a class="btn btn-full" href="/signup">Sign Up</a>
+                </li>
+            <% } else { %>
+                <li>
+                    <a class="btn btn-full" href="/admin/products">Admin</a>
+                </li>
+                <li>
+                    <form action="/logout" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input class="btn btn-full" type="submit" value="Logout"></input>
+                    </form>
+                </li>
+            <% } %>
+                </ul>
+            </div>
+        </nav> 
+    </header>

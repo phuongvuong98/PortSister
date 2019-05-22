@@ -38,9 +38,8 @@ router.post(
   [
     body('title')
       .isString()
-      .isLength({ min: 3 })
       .trim(),
-    body('price').isFloat(),
+    body('category').isString(),
     body('description')
       .isLength({ min: 5, max: 400 })
       .trim()

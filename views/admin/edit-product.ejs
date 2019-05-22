@@ -1,10 +1,10 @@
-<%- include('../includes/head.ejs') %>
+<%- include('./includes/head.ejs') %>
     <link rel="stylesheet" href="/css/forms.css">
     <link rel="stylesheet" href="/css/product.css">
 </head>
 
 <body>
-   <%- include('../includes/navigation.ejs') %>
+   <%- include('./includes/navigation.ejs') %>
 
     <main>
         <% if (errorMessage) { %>
@@ -20,15 +20,6 @@
                     id="title" 
                     value="<% if (editing || hasError) { %><%= product.title %><% } %>">
             </div>
-            <!-- <div class="form-control">
-                <label for="imageUrl">Image URL</label>
-                <input 
-                    class="<%= validationErrors.find(e => e.param === 'imageUrl') ? 'invalid' : '' %>"
-                    type="text" 
-                    name="imageUrl" 
-                    id="imageUrl" 
-                    value="<% if (editing || hasError) { %><%= product.imageUrl %><% } %>">
-            </div> -->
             <div class="form-control">
                 <label for="image">Image</label>
                 <input 
@@ -38,12 +29,6 @@
             </div>
             <div class="form-control">
                 <label for="category">Category</label>
-                <!-- <input 
-                    class="<%= validationErrors.find(e => e.param === 'category') ? 'invalid' : '' %>"
-                    type="text" 
-                    name="category" 
-                    id="category" 
-                    value="<% if (editing || hasError) { %><%= product.category %><% } %>"> -->
 
                 <select name="category" id="category" class="<%= validationErrors.find(e => e.param === 'category') ? 'invalid' : '' %>">
                         <option value="advertising" selected="">Advertising</option>
@@ -68,4 +53,4 @@
             <button class="btn" type="submit"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
         </form>
     </main>
-<%- include('../includes/end.ejs') %>
+<%- include('./includes/end.ejs') %>
