@@ -283,7 +283,7 @@ exports.postEditLogo = (req, res, next) => {
       logos[0].imageUrl = image[0].path;
       return logos[0].save().then(result => {
         console.log("lala");
-        fileHelper.deleteFile(delete_old_img);
+        //fileHelper.deleteFile(delete_old_img);
         res.render('shop/index', {
           prods: products,
           pageTitle: 'Shop',
