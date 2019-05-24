@@ -1,30 +1,37 @@
 <script>
 	function showdata(a, b, c, d, e,productId) {
 		var link = d.toString();
-		console.log(a +"|"+ b +"|"+ c +"|"+ d +"|" + e + "|" + productId);
+		//console.log(a +"|"+ b +"|"+ c +"|"+ d +"|" + e + "|" + productId);
 		var arrIMG = e.split(",");
-		console.log("TCL: showdata -> arrIMG", arrIMG)
+		//console.log("TCL: showdata -> arrIMG", arrIMG)
 		document.getElementById("indata1").innerHTML = a;
 		document.getElementById("indata2").innerHTML = b;
 		document.getElementById("indata3").innerHTML = c;
 		document.getElementById("indata4").src = "/" + link;
 		
-        console.log("TCL: showdata -> link", link)
+        //console.log("TCL: showdata -> link", link)
 		for (let i = 0; i < 11; i++) {
 			var temp = "img" + i.toString();
-			console.log(temp);
+			//console.log(temp);
 			if (arrIMG.length <= i) {
 				document.getElementById(temp).style.display = "none";
 			} else {
 				document.getElementById(temp).src = "/" + arrIMG[i].toString();
-			}
-                
+			}    
 		}
 		$("a.details").attr("href", "/products/" + productId);
+
+
+		// console.log("huhu");
+		// var h = document.getElementsByClassName("popup__content")[0].offsetHeight;
+		// console.log("h:",h);
+		// var haft_h = parseFloat(h) / 2;
+		// console.log("TCL: haft_h", haft_h)
+		// document.getElementsByClassName("popup__content")[0].style.top = haft_h.toString() + "px";
 	}
 </script>
 <div class="popup" id="popup">
-	<div class="popup__content clearfix">
+	<div class="popup__content">
 		
 		<img src="" id="indata4" alt="Tour photo" class="popup__img">
 		<a href="<%= path %>" class="popup__close a-in-img">&times;</a>

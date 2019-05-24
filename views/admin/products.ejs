@@ -16,8 +16,15 @@
                                     </h1>
                                 </header>
                                 <div class="card__image">
-                                    <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+                                    <img src="/<%= product.imageUrlCover %>" alt="<%= product.title %>">
                                 </div>
+
+                                <% product.imageUrlOther.forEach(img => { %>
+                                    <div class="card__image">
+                                        <img src="/<%= img %>" alt="<%= product.title %>">
+                                    </div>
+                                <% }); %>
+
                                 <div class="card__content">
                                     <h2 class="product__price">
                                         Category:<%= product.category %>

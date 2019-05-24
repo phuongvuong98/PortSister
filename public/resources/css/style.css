@@ -793,10 +793,8 @@ input[type=checkbox] {
 /* POPUP */
 /* ----------------------------------------------- */
 .popup {
-    height: 1000%;
+    height: 10000%;
     width: 100%;
-    top: 0;
-    left: 0;
     background-color: rgba(0, 0, 0, 0.8);
     z-index: 9999;
     opacity: 0;
@@ -814,9 +812,9 @@ input[type=checkbox] {
     }
   }
   .popup__content {
-    position: absolute;
-    top: 32%;
-    left: 50%;
+    position: absolute; 
+    top: 2rem;
+    left: 18vh;
     -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
     width: 80%;
@@ -874,8 +872,8 @@ input[type=checkbox] {
   
   .popup:target .popup__content {
     opacity: 1;
-    -webkit-transform: translate(-50%, -50%) scale(1);
-            transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: scale(1);
+            transform: scale(1);
   }
   
   .popup__close:link, .popup__close:visited {
