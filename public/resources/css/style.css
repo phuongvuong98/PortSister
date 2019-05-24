@@ -217,7 +217,7 @@ input[type=submit]:active {
 
 header {
     display: inline-block;
-    width: 20%;
+    width: 19.5%;
     height: 100vh;
     background-attachment: fixed;
     background-color:  #F1F1F1;
@@ -401,7 +401,7 @@ ul.auth li {
 
 .section-img {
     padding: 0;
-    width: 80%;
+    width: 80.5%;
     float: right;
     height: 100vh;
 }
