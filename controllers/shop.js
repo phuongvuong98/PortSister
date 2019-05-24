@@ -4,11 +4,14 @@ const path = require('path');
 const PDFDocument = require('pdfkit');
 
 const Product = require('../models/product');
-const Order = require('../models/order');
+const Logo = require('../models/logo');
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.find()
+
+  Logo.find()
+  .then(logos => {
+    Product.find()
   .then(products => {
     Product.findById(prodId)
     .then(product => {
@@ -42,7 +45,54 @@ exports.getProduct = (req, res, next) => {
         pageTitle: product.title,
         path: '/products',
         productPre: productPre,
-        productNext: productNext
+        productNext: productNext,
+        logo: logos[0].imageUrl
+      });
+    })
+  })
+  })
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
+};
+
+exports.getIndex = (req, res, next) => {
+  Logo.find()
+  .then(logos => {
+    Product.find()
+    .then(products => {
+      res.render('shop/index', {
+        prods: products,
+        pageTitle: 'Shop',
+        path: '/',
+        logo: logos[0].imageUrl
+      });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+  })
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
+};
+
+exports.getbranding = (req, res, next) => {
+  Logo.find()
+  .then(logos => {
+    Product.find({category: "branding"})
+    .then(products => {
+      res.render('shop/index', {
+        prods: products,
+        pageTitle: 'Nguyen Anh Nghiet',
+        path: '/tagged/branding',
+        logo: logos[0].imageUrl
       });
     })
   })
@@ -53,65 +103,41 @@ exports.getProduct = (req, res, next) => {
   });
 };
 
-exports.getIndex = (req, res, next) => {
-  Product.find()
-    .then(products => {
-      res.render('shop/index', {
-        prods: products,
-        pageTitle: 'Shop',
-        path: '/'
-      });
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
-exports.getbranding = (req, res, next) => {
-  Product.find({category: "branding"})
-    .then(products => {
-      res.render('shop/index', {
-        prods: products,
-        pageTitle: 'Nguyen Anh Nghiet',
-        path: '/tagged/branding'
-      });
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
 exports.getillustration = (req, res, next) => {
-  Product.find({category: "illustration"})
+  Logo.find()
+  .then(logos => {
+    Product.find({category: "illustration"})
     .then(products => {
       res.render('shop/index', {
         prods: products,
         pageTitle: 'Nguyen Anh Nghiet',
-        path: '/tagged/illustration'
+        path: '/tagged/illustration',
+        logo: logos[0].imageUrl
       });
     })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+  })
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };
 exports.getpackaging = (req, res, next) => {
-  Product.find({category: "packaging"})
+  Logo.find()
+  .then(logos => {
+    Product.find({category: "packaging"})
     .then(products => {
       res.render('shop/index', {
         prods: products,
         pageTitle: 'Nguyen Anh Nghiet',
-        path: '/tagged/packaging'
+        path: '/tagged/packaging',
+        logo: logos[0].imageUrl
       });
     })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+  })
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };

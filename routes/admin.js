@@ -11,6 +11,7 @@ const router = express.Router();
 // /admin/add-product => GET
 router.get('/add-product', isAuth, adminController.getAddProduct);
 
+
 // /admin/products => GET
 router.get('/products', isAuth, adminController.getProducts);
 
@@ -29,6 +30,14 @@ router.post(
   ],
   isAuth,
   adminController.postAddProduct
+);
+
+router.get('/edit-logo', isAuth, adminController.getEditLogo);
+
+router.post(
+  '/edit-logo',
+  isAuth,
+  adminController.postEditLogo
 );
 
 router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
