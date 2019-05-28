@@ -42,13 +42,13 @@ body {
 .row {
     max-width: 1140px;
     margin: 0 20%;
-}̦
+}
 
 .row-nav {
     max-width: 1140px;
-    margin-left: 8%;
-    margin-right: 8%;
-    margin-bottom: 20%;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 3rem;
 }
 
 section {
@@ -217,7 +217,7 @@ input[type=submit]:active {
 
 header {
     display: inline-block;
-    width: 19.5%;
+    width: 20%;
     height: 100vh;
     background-attachment: fixed;
     background-color:  #F1F1F1;
@@ -386,6 +386,10 @@ ul.auth li {
     width: 20px;
     height: auto;
 }
+.fb {
+    width: 40px;
+    height: auto;
+}
 /* ----------------------------------------------- */
 /* FEATURES */
 /* ----------------------------------------------- */
@@ -401,7 +405,7 @@ ul.auth li {
 
 .section-img {
     padding: 0;
-    width: 80.5%;
+    width: 80%;
     float: right;
     height: 100vh;
 }
