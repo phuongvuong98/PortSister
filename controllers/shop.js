@@ -83,6 +83,10 @@ exports.getIndex = (req, res, next) => {
   });
 };
 
+exports.getContact = (req, res, next) => {
+  next();
+};
+
 exports.getbranding = (req, res, next) => {
   Logo.find()
   .then(logos => {

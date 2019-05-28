@@ -19,4 +19,6 @@ router.get('/tagged/illustration', shopController.getillustration);
 
 router.get('/tagged/packaging', shopController.getpackaging);
 
+router.get('/contact', shopController.getContact);
+
 module.exports = router;
