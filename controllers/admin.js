@@ -146,40 +146,65 @@ exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
   const updatedcategory = req.body.category;
-  const image = req.file;
   const updatedDesc = req.body.description;
 
-  const errors = validationResult(req);
+  var imageUrlCover = null;
+  var imageUrl = null;
+  var image = null;
 
-  if (!errors.isEmpty()) {
-    return res.status(422).render('admin/edit-product', {
-      pageTitle: 'Edit Product',
-      path: '/admin/edit-product',
-      editing: true,
-      hasError: true,
-      product: {
-        title: updatedTitle,
-        category: updatedcategory,
-        description: updatedDesc,
-        _id: prodId
-      },
-      errorMessage: errors.array()[0].msg,
-      validationErrors: errors.array()
+  if (req.files.length != 0) {
+    image = req.files;
+
+    //const errors = validationResult(req);
+
+    imageUrlCover = image[0].path;
+    imageUrl = [];
+    
+    image.forEach((img, i) => {
+        if (i != 0) {
+          imageUrl.push(image[i].path);
+        } 
     });
+    console.log("TCL: exports.postAddProduct -> imageUrl", imageUrl)
   }
+  
+
+  // if (!errors.isEmpty()) {
+  //   return res.status(422).render('admin/edit-product', {
+  //     pageTitle: 'Edit Product',
+  //     path: '/admin/edit-product',
+  //     editing: true,
+  //     hasError: true,
+  //     product: {
+  //       title: updatedTitle,
+  //       category: updatedcategory,
+  //       description: updatedDesc,
+  //       imageUrlCover :imageUrlCover,
+  //       imageUrlOther :imageUrl,
+  //       _id: prodId
+  //     },
+  //     errorMessage: errors.array()[0].msg,
+  //     validationErrors: errors.array()
+  //   });
+  // }
 
   Product.findById(prodId)
     .then(product => {
       if (product.userId.toString() !== req.user._id.toString()) {
         return res.redirect('/');
       }
-      product.title = updatedTitle;
-      product.category = updatedcategory;
-      product.description = updatedDesc;
       if (image) {
-        //fileHelper.deleteFile(product.imageUrl);
-        product.imageUrl = image.path;
+        product.title = updatedTitle;
+        product.category = updatedcategory;
+        product.description = updatedDesc;
+        product.imageUrlCover = imageUrlCover;
+        product.imageUrlOther = imageUrl;
+      } else {
+        product.title = updatedTitle;
+        product.category = updatedcategory;
+        product.description = updatedDesc;
       }
+      
       return product.save().then(result => {
         console.log('UPDATED PRODUCT!');
         res.redirect('/admin/products');
