@@ -4,42 +4,7 @@
     <section class="section-img">
         <div class="wrap-image clearfix">
             <div class="wrap-logo">
-                <img src="/<%= product.imageUrlCover %>" alt="<%= product.title %>">
             </div>
         </div>
-        <% product.imageUrlOther.forEach(img => { %>
-            <div class="wrap-image clearfix">
-                <div class="wrap-logo">
-                    <img src="/<%= img %>" alt="<%= product.title %>">
-                </div>
-            </div>
-        <% }); %>
-        <div class="row clearfix">
-            <div class="wrap-des">
-                <p>Pattern Design:<strong><%= product.title %></strong></p>
-            </div>
-            <div class="wrap-des">
-                <p>Kind: <%= product.category %></p>
-            </div>
-            <div class="wrap-des">
-                <p><%= product.description %></p>
-            </div>
-        </div>
-        
-
-        <div class="row clearfix center">
-            <% if ( productPre != null ) { %>
-            <a class="btn btn-full js--scroll-to-plans w30" href="/products/<%= productPre._id %>">Previous</a>
-            <% } %>
-            <% if ( productNext != null ) { %>
-            <a class="btn btn-ghost js--scroll-to-start w30" href="/products/<%= productNext._id %>">Next</a>
-            <% } %>
-        </div>
-        <!-- Back to top -->
-        <!-- <div class="btn-back-to-top" id="myBtn">
-                <span class="symbol-btn-back-to-top">huhu
-                    <i class="zmdi zmdi-chevron-up"></i>
-                </span>
-        </div> -->
     </section>
     <%- include("./includes/end.ejs") %>
