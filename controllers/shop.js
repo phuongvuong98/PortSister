@@ -65,7 +65,7 @@ exports.getIndex = (req, res, next) => {
     .then(products => {
       res.render('shop/index', {
         prods: products,
-        pageTitle: 'Shop',
+        pageTitle: 'Nguyen Anh Nghiet',
         path: '/',
         logo: logos[0].imageUrl
       });
@@ -84,7 +84,20 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getContact = (req, res, next) => {
-  next();
+  Logo.find()
+  .then(logos => {
+    console.log("CONTACT!!!")
+    return res.render('shop/contact', {
+        pageTitle: 'Nguyen Anh Nghiet',
+        path: '/contact',
+        logo: logos[0].imageUrl
+    });
+  })
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };
 
 exports.getbranding = (req, res, next) => {

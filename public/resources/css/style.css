@@ -343,19 +343,19 @@ header {
     display: inline-block;
     -webkit-box-shadow: 0px 0px 2px #888;
             box-shadow: 0px 0px 2px #888;
-    padding: .9rem .85rem;
+    padding: .5rem .55rem;
     border-radius: 45%;
     background-color: #bd9b62;
 }
 
 .social-links li a.fb:link,
 .social-links li a.fb:visited  {
-    padding: .9rem 1.12rem;
+    padding: .5rem .85rem;
 }
 
 .social-links li a.ins:link,
 .social-links li a.ins:visited  {
-    padding: .9rem 1.01rem;
+    padding: .5rem .71rem;
 }
 
 .footer-nav li a:hover,
@@ -803,7 +803,9 @@ input[type=checkbox] {
     margin-bottom: 3%;
 }
 
-
+.m-t-3rem {
+    margin-top: 3rem;
+}
 /* ----------------------------------------------- */
 /* POPUP */
 /* ----------------------------------------------- */
