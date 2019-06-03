@@ -61,12 +61,12 @@ exports.getProduct = (req, res, next) => {
 exports.getIndex = (req, res, next) => {
   Logo.find()
   .then(logos => {
-    Product.find()
+    Product.find({category: "illustration"})
     .then(products => {
       res.render('shop/index', {
         prods: products,
         pageTitle: 'Nguyen Anh Nghiet',
-        path: '/',
+        path: '/tagged/illustration',
         logo: logos[0].imageUrl
       });
     })
