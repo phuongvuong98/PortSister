@@ -52,7 +52,7 @@ const authRoutes = require('./routes/auth');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
-  multer({ storage: fileStorage, fileFilter: fileFilter }).array('image', 12)
+  multer({ storage: fileStorage, fileFilter: fileFilter }).array('image', 100)
 );
 
 // app.post("/admin/edit-logo", multer({ storage: fileStorage}).single('logo'));
