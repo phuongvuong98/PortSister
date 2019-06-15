@@ -61,6 +61,8 @@ exports.getProduct = (req, res, next) => {
 exports.getIndex = (req, res, next) => {
   Logo.find()
   .then(logos => {
+    // neu muon doi thay vao:
+    //  illustration / branding / packaging
     Product.find({category: "illustration"})
     .then(products => {
       res.render('shop/index', {
