@@ -46,7 +46,7 @@ body {
 
 .row-nav {
     max-width: 1140px;
-    margin-left: 1rem;
+    margin-left: 1.3rem;
     margin-right: 1rem;
     margin-bottom: 3rem;
 }
@@ -100,7 +100,7 @@ h2:after {
 }
 
 .row-nav p {
-    font-weight: 300;
+    font-weight: 700;
 }
 
 .row-nav span {
@@ -343,19 +343,19 @@ header {
     display: inline-block;
     -webkit-box-shadow: 0px 0px 2px #888;
             box-shadow: 0px 0px 2px #888;
-    padding: .9rem .85rem;
+    padding: .4rem .5rem;
     border-radius: 45%;
     background-color: #bd9b62;
 }
 
 .social-links li a.fb:link,
 .social-links li a.fb:visited  {
-    padding: .9rem 1.12rem;
+    padding: .4rem .8rem;
 }
 
 .social-links li a.ins:link,
 .social-links li a.ins:visited  {
-    padding: .9rem 1.01rem;
+    padding: .4rem .6rem;
 }
 
 .footer-nav li a:hover,
@@ -541,7 +541,6 @@ a.a-in-img:hover {
 /* ----------------------------------------------- */
 
 .wrap-image {
-    height: 100vh;
     margin: 0px 0px;
     background-attachment: fixed;
     background-image: cover;
@@ -550,7 +549,6 @@ a.a-in-img:hover {
 
 .wrap-image img {
     width: 100%;
-    margin-bottom: 5%;
 }
 
 .wrap-des {
@@ -803,7 +801,9 @@ input[type=checkbox] {
     margin-bottom: 3%;
 }
 
-
+.m-t-3rem {
+    margin-top: 3rem;
+}
 /* ----------------------------------------------- */
 /* POPUP */
 /* ----------------------------------------------- */

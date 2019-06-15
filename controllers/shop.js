@@ -61,12 +61,12 @@ exports.getProduct = (req, res, next) => {
 exports.getIndex = (req, res, next) => {
   Logo.find()
   .then(logos => {
-    Product.find()
+    Product.find({category: "illustration"})
     .then(products => {
       res.render('shop/index', {
         prods: products,
-        pageTitle: 'Shop',
-        path: '/',
+        pageTitle: 'Nguyen Anh Nghiet',
+        path: '/tagged/illustration',
         logo: logos[0].imageUrl
       });
     })
@@ -84,7 +84,20 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getContact = (req, res, next) => {
-  next();
+  Logo.find()
+  .then(logos => {
+    console.log("CONTACT!!!")
+    return res.render('shop/contact', {
+        pageTitle: 'Nguyen Anh Nghiet',
+        path: '/contact',
+        logo: logos[0].imageUrl
+    });
+  })
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };
 
 exports.getbranding = (req, res, next) => {
