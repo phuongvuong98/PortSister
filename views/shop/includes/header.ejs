@@ -11,24 +11,28 @@
                 <!-- <p>Illustrator</p><br>
                 <p>& Graphic Designer</p> -->
                 <ul class="main-nav js--main-nav">
-                    <li><a href="/" style="border:0;">Illustrator</a></li>
-                    <li><a href="/" style="border:0;">& Graphic Designer</a></li>
+                    <!-- <li><a href="/" style="border:0;">Illustrator</a></li>
+                    <li><a href="/" style="border:0;">& Graphic Designer</a></li> -->
+                    <li style="font-size: 0.9rem;">Illustrator</li>
+                    <li style="font-size: 0.9rem;">& Graphic Designer</li>
                 </ul>
             </div>
             <div class="row-nav clearfix">
-                    <ul class="main-nav js--main-nav">
-                        <span>Work</span>
-                        <li><a class="<%= path === '/tagged/branding' ? 'active' : '' %>" href="/tagged/branding">Branding</a></li>
-                        <li><a class="<%= path === '/tagged/illustration' ? 'active' : '' %>" href="/tagged/illustration">Illustration</a></li>
-                        <li><a class="<%= path === '/tagged/packaging' ? 'active' : '' %>" href="/tagged/packaging">Packaging</a></li>
-                    </ul>
-                    <ul class="main-nav js--main-nav">
-                        <span>Info</span>
-                        <li><a class="<%= path === '/contact' ? 'active' : '' %>" href="/contact">Contact</a></li>
-                    </ul>
-                    <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+                <ul class="main-nav js--main-nav">
+                    <span>Work</span>
+                    <li><a class="<%= path === '/tagged/branding' ? 'active' : '' %>" href="/tagged/branding">Branding</a></li>
+                    <li><a class="<%= path === '/tagged/illustration' ? 'active' : '' %>" href="/tagged/illustration">Illustration</a></li>
+                    <li><a class="<%= path === '/tagged/packaging' ? 'active' : '' %>" href="/tagged/packaging">Packaging</a></li>
+                </ul>
             </div>
-            <div class="row-nav clearfix">¸
+            <div class="row-nav clearfix">
+                <ul class="main-nav js--main-nav">
+                    <span>Info</span>
+                    <li><a class="<%= path === '/contact' ? 'active' : '' %>" href="/contact">Contact</a></li>
+                </ul>
+                <!-- <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a> -->
+            </div>
+            <div class="row-nav clearfix">
                 <ul class="social-links">
                     <li><a href="https://www.behance.net/anhnghiet" target="_blank"><img src="/resources/css/img/behance.png" alt="behance" class="behance"></a></li>
                     <li><a href="https://www.facebook.com/nguyen.anhnghiet" alt="fb" class="fb"  target="_blank"><i class="ion-social-facebook"></i></a></li>
@@ -36,16 +40,10 @@
                 </ul>
             </div>
 
+            
+            <% if (isAuthenticated) { %>
             <div class="row-nav clearfix">
                 <ul class="auth">
-            <% if (!isAuthenticated) { %>
-                <!-- <li>
-                    <a class="btn btn-full" href="/login">Login</a>
-                </li> -->
-                <!-- <li>
-                    <a class="btn btn-full" href="/signup">Sign Up</a>
-                </li> -->
-            <% } else { %>
                 <li>
                     <a class="btn btn-full" href="/admin/products">Admin</a>
                 </li>
@@ -55,8 +53,8 @@
                         <input class="btn btn-full" type="submit" value="Logout"></input>
                     </form>
                 </li>
-            <% } %>
                 </ul>
             </div>
+            <% } %>
         </nav> 
     </header>

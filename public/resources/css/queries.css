@@ -126,6 +126,11 @@
         float: none;
         position: relative;
     }
+    .row-nav {
+        max-width: 480px;
+        margin-left: 1.3rem;
+        margin-bottom: 2rem;
+    }
     .section-img { 
         width: 100%; 
         float: none;
@@ -133,6 +138,14 @@
     .meals-showcase li {
         display: block;
         width: 100%;
+    }
+    a:link,
+    a:visited {
+        font-size: .7rem;
+        padding: 0.5rem;
+        border-bottom: 0.5rem solid #bd9b62;
+        -webkit-transition: border-bottom 0.2s, color 0.2s;
+        transition: border-bottom 0.2s, color 0.2s;
     }
 }  
 
