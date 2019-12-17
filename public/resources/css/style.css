@@ -268,14 +268,14 @@ header {
     color: #000;
     text-decoration: none;
     font-size: 90%;
-    border-bottom: 2px solid transparent;
+    border-bottom: 0.2rem solid transparent;
     -webkit-transition: border-bottom 0.2s;
     transition: border-bottom 0.2s;
 }
 
 .main-nav li a:hover,
 .main-nav li a:active {
-    border-bottom: 2px solid #bd9b62;
+    border-bottom: 0.2rem solid #bd9b62;
 }
 
 

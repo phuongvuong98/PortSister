@@ -23,10 +23,7 @@ router.post(
       .isString()
       .isLength({ min: 3 })
       .trim(),
-    body('category').isString(),
-    body('description')
-      .isLength({ min: 5, max: 400 })
-      .trim()
+    body('category').isString()
   ],
   isAuth,
   adminController.postAddProduct

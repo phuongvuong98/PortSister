@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
+const bcrypt = require('bcryptjs');
 // const PDFDocument = require('pdfkit');
 
 const Product = require('../models/product');
@@ -61,6 +63,11 @@ exports.getProduct = (req, res, next) => {
 exports.getIndex = (req, res, next) => {
   Logo.find()
   .then(logos => {
+    bcrypt
+    .hash("phuongvuong", 12)
+    .then(hashedPassword => {
+      console.log(hashedPassword);
+      });
     // neu muon doi thay vao:
     //  illustration / branding / packaging
     Product.find({category: "illustration"})

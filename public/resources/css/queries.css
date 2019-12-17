@@ -142,8 +142,8 @@
     a:link,
     a:visited {
         font-size: .7rem;
-        padding: 0.5rem;
-        border-bottom: 0.5rem solid #bd9b62;
+        padding: 0.05rem;
+        border-bottom: 0.1rem solid #bd9b62;
         -webkit-transition: border-bottom 0.2s, color 0.2s;
         transition: border-bottom 0.2s, color 0.2s;
     }

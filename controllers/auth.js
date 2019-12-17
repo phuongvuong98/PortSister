@@ -87,6 +87,8 @@ exports.postLogin = (req, res, next) => {
           validationErrors: []
         });
       }
+      console.log("user.password:" + user.password)
+      console.log("password:" + password)
       bcrypt
         .compare(password, user.password)
         .then(doMatch => {
